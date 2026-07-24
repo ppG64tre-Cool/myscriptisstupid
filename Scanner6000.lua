@@ -209,9 +209,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 				highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 				highlightRig.Enabled = true
 				
-				Highlight[v] = {
-					HighlightOne = highlightRig;
-				}
+				Highlight[v] = highlightRig
 			end
 		end
 	end
@@ -227,8 +225,8 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	
 	for i, v in pairs(Highlight) do
 		if not currt3DEntitytrack[i] then
-			if Highlight[v].HighlightOne then
-				Highlight[v].HighlightOne:Destroy()
+			if Highlight[v] ~= nil then
+				Highlight[v]:Destroy()
 			end
 		end
 	end
