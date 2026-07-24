@@ -46,6 +46,12 @@ local Entitylist = {
 	"RushMoving", "Silence", "Eyes", "BackdoorRush", "SingularityZone"
 }
 
+local EntitylistCount = {
+	"A60", "A120", "monster2", "AmbushMoving", 
+	"Specimen 8", "Frostbite", "Rebound", "RipperMoving", 
+	"RushMoving", "Silence", "BackdoorRush", "SingularityZone"
+}
+
 -- TABLE FOR REAL-TIME LIGHT TRACKING
 local activeItemLights = {}
 
@@ -81,6 +87,8 @@ local function checkAndAddLight(child: Instance)
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	elseif child:IsA("Model") and child.Name == "FuseObtain" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+	elseif child:IsA("Model") and child.Name == "imstuff" then
+	createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	end
 end
 
@@ -153,7 +161,9 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 	for _, v in pairs(workspace:GetChildren()) do
 		if v:IsA("Model") and table.find(Entitylist, v.Name) then
-			EntityCount += 1
+			if table.find(EntitylistCount, v.Name) then
+				EntityCount += 1
+			end
 			currentlyTrackedEntities[v] = true
 
 			-- If ESP isn't created yet
