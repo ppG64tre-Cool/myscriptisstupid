@@ -14,6 +14,8 @@ local TweenService = game:GetService("TweenService")
 
 local guis = game:GetObjects("rbxassetid://77380567008109")[1]
 guis.Parent = localplayer:WaitForChild("PlayerGui")
+guis.ResetOnSpawn = false
+
 
 local svapos = guis.staticPng.Position
 local numbershaky = 10
