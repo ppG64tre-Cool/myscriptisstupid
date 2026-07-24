@@ -118,10 +118,6 @@ local stt = 0.885
 -- Main RenderStepped Loop
 local RenderCheck
 RenderCheck = RunService.RenderStepped:Connect(function()
-	
-	if valueSpeed then
-		guis.Sound.PlaybackSpeed = valueSpeed
-	end
 
 	if numberoftanpo.Value then
 		guis.staticPng.ImageTransparency = numberoftanpo.Value
