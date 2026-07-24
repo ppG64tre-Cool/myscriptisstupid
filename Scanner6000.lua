@@ -123,7 +123,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		guis.Sound.PlaybackSpeed = valueSpeed
 	end
 
-	if numberoftanpo then
+	if numberoftanpo.Value then
 		guis.staticPng.ImageTransparency = numberoftanpo.Value
 	end
 
