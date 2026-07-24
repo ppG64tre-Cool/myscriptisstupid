@@ -234,7 +234,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		end
 	end
 	
-	guis.Sound.PlaybackSpeed += (guis.Sound.PlaybackSpeed - valueSpeed) / 1.15
+	guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 1.15
 	numberoftanpo += (stt - numberoftanpo) / 1.15
 	
 	
