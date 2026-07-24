@@ -203,7 +203,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			
 			currt3DEntitytrack[v] = true
 			
-			if v:IsA("Model") and v.Name == "FigureRig" then
+			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
 				
 				if nil  then
 					return
