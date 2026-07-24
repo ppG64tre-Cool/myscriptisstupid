@@ -24,8 +24,8 @@ local rng = Random.new()
 -- Screen Shake
 RunService.RenderStepped:Connect(function()
 	guis.staticPng.Position = svapos + UDim2.new(
-		0, rng:NextNumber(-resultShake, resultShake), 
-		0, rng:NextNumber(-resultShake, resultShake)
+		rng:NextNumber(-resultShake, resultShake), 0, 
+		rng:NextNumber(-resultShake, resultShake), 0
 	)
 end)
 
