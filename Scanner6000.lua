@@ -235,11 +235,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	end
 	
 	guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 1.15
-	numberoftanpo.Value += (stt - numberoftanpo) / 1.15
-	
-	
-	
-	
+	numberoftanpo.Value += (stt - numberoftanpo.Value) / 1.15	
 
 	-- Audio Speed based on Entities
 	if EntityCount == 0 or EntityCount < 0 then
