@@ -72,13 +72,15 @@ end
 
 local function checkAndAddLight(child: Instance)
 	if child:IsA("Model") and child.Name == "KeyObtain" then
-		createTrackedLight(child, Color3.new(1, 1, 1), rng:NextNumber(0.5, 1.5), 30)
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
+	elseif child:IsA("Model") and child.Name == "LeverForGate" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
 	elseif child:IsA("BasePart") and child.Name == "RoomExit" then
-		createTrackedLight(child, Color3.new(1, 1, 1), rng:NextNumber(0.5, 1), 15)
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 15)
 	elseif child:IsA("BasePart") and child.Name == "BookBase" then
-		createTrackedLight(child, Color3.new(1, 1, 1), rng:NextNumber(0.5, 1), 10)
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	elseif child:IsA("Model") and child.Name == "FuseObtain" then
-		createTrackedLight(child, Color3.new(1, 1, 1), rng:NextNumber(0.5, 1), 10)
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	end
 end
 
