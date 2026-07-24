@@ -12,7 +12,7 @@ local UIP = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-local guis = game:GetObjects("rbxassetid://106513443340293")[1]
+local guis = game:GetObjects("rbxassetid://106513443340293")[2]
 guis.Parent = localplayer:WaitForChild("PlayerGui")
 
 local svapos = guis.staticPng.Position
