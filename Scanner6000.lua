@@ -48,8 +48,8 @@ local Entitylist = {
 
 local EntitylistCount = {
 	"A60", "A120", "monster2", "AmbushMoving", 
-	"Specimen 8", "Frostbite", "Rebound", "RipperMoving", 
-	"RushMoving", "Silence", "BackdoorRush", "SingularityZone"
+	"Specimen 8", "Rebound", "RipperMoving", 
+	"RushMoving", "BackdoorRush"
 }
 
 -- TABLE FOR REAL-TIME LIGHT TRACKING
