@@ -43,8 +43,7 @@ colorEffect:Clone().Parent = workspace.CurrentCamera
 local Entitylist = {
 	"A60", "A120", "monster2", "AmbushMoving", "CeaseMoving", 
 	"Specimen 8", "Frostbite", "Rebound", "RipperMoving", 
-	"RushMoving", "Silence", "Eyes", "BackdoorRush", 
-	"Shocker", "SingularityZone"
+	"RushMoving", "Silence", "Eyes", "BackdoorRush", "SingularityZone"
 }
 
 -- TABLE FOR REAL-TIME LIGHT TRACKING
@@ -234,8 +233,8 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		end
 	end
 	
-	guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 1.15
-	numberoftanpo.Value += (stt - numberoftanpo.Value) / 1.15	
+	guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 17.75
+	numberoftanpo.Value += (stt - numberoftanpo.Value) / 17.75
 
 	-- Audio Speed based on Entities
 	if EntityCount == 0 or EntityCount < 0 then
