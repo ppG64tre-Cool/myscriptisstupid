@@ -149,12 +149,12 @@ end)
 ScannerEnable.Changed:Connect(function()
 	if ScannerEnable then
 		numberoftanpo.Value = 0
-		if guis:FindFirstChild("turnon") and guis.turnon:IsA("Sound") then
-			guis.turnon:Play()
+		if guis:FindFirstChild("turnon") and guis:FindFirstChild("turnon"):IsA("Sound") then
+			guis:FindFirstChild("turnon"):Play()
 		end
 	else
-		if guis:FindFirstChild("turnoff") and guis.turnoff:IsA("Sound") then
-			guis.turnoff:Play()
+		if guis:FindFirstChild("turnoff") and guis:FindFirstChild("turnoff"):IsA("Sound") then
+			guis:FindFirstChild("turnoff"):Play()
 		end
 	end
 end)
