@@ -168,9 +168,9 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 	if lige then
 		if ScannerEnable then
-			lige.Enable = true
+			lige.Enabled = true
 		else	
-			lige.Enable = false
+			lige.Enabled = false
 		end
 	end
 
