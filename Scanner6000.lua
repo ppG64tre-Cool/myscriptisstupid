@@ -250,7 +250,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		for _, v in pairs(currentroom:GetDescendants()) do
 
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
-				if not HighlightE[v] then
+				if not HighlightE[v] and currt3DEntitytrack[v] == nil then
 					currt3DEntitytrack[v] = true
 
 					local Model = v
