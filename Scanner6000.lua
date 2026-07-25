@@ -272,7 +272,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 	-- Clean up destroyed entities
 	for entity, espData in pairs(activeGlowParts) do
-		if not currentlyTrackedEntities[entity] then
+		if currentlyTrackedEntities[entity] == nil then
 			if espData.Gui then espData.Gui:Destroy() end
 			if espData.Att then espData.Att:Destroy() end
 			activeGlowParts[entity] = nil
@@ -281,14 +281,15 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 	-- Fixed: Correct object references for table cleanup
 	for i, v in pairs(HighlightE) do
-		if not currt3DEntitytrack[i] then
+		if currt3DEntitytrack[i] == nil then
 			if v.highlightrigmonster then
 				v.highlightrigmonster:Destroy()
 			end
 			HighlightE[i] = nil
-		elseif Highlight[i] and Highlight[i]:IsA("Highlight") then
+		end
+		if v.highlightrigmonster and v.highlightrigmonster:IsA("Highlight") then
 			if ScannerEnable then
-				HighlightE[i].Enabled = ScannerEnable
+				v.highlightrigmonster.Enabled = ScannerEnable
 			end
 		end	
 	end
