@@ -89,7 +89,7 @@ local function checkAndAddLight(child: Instance)
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	elseif child:IsA("Model") and child.Name == "FuseObtain" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
-	elseif child:IsA("Model") and child.Name == "imstuff" then
+	elseif child:IsA("BasePart") and child.Name == "imstuff" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	end
 end
