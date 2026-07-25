@@ -12,7 +12,7 @@ local UIP = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-local guis = game:GetObjects("rbxassetid://77380567008109")[1]
+local guis: ScreenGui = game:GetObjects("rbxassetid://77380567008109")[1]
 guis.Parent = localplayer:WaitForChild("PlayerGui")
 guis.ResetOnSpawn = false
 
@@ -37,8 +37,8 @@ local numberoftanpo = Instance.new("NumberValue", guis)
 numberoftanpo.Value = 0.885
 numberoftanpo.Name = "NumberofTanpo"
 
-local colorEffect = guis.Vistion
-colorEffect:Clone().Parent = workspace.CurrentCamera
+local colorEffect: ColorCorrectionEffect = guis.Vistion:Clone()
+colorEffect.Parent = game:GetService("Lighting")
 
 local Entitylist = {
 	"A60", "A120", "monster2", "AmbushMoving", "CeaseMoving", 
@@ -127,16 +127,20 @@ local ScannerEnable = true
 -- toggle Scanner
 local function toggleScanner()
 	ScannerEnable = not ScannerEnable
-	
+
 	-- Fixed: Moved the logic here since Booleans don't have a .Changed event
 	if ScannerEnable then
 		numberoftanpo.Value = 0
 		if guis:FindFirstChild("turnon") and guis:FindFirstChild("turnon"):IsA("Sound") then
 			guis:FindFirstChild("turnon"):Play()
+			colorEffect.Enabled = true
+			guis.Enabled = true
 		end
 	else
 		if guis:FindFirstChild("turnoff") and guis:FindFirstChild("turnoff"):IsA("Sound") then
 			guis:FindFirstChild("turnoff"):Play()
+			colorEffect.Enabled = false
+			guis.Enabled = false
 		end
 	end
 end
@@ -172,11 +176,17 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			continue
 		end
 
-		local itemPos = item:IsA("Model") and item:GetPivot().Position or item.Position
+		local itemPos = (item:IsA("Model")) and item:GetPivot().Position or item.Position
 		lightData.Att.WorldPosition = itemPos
 
 		lightData.Light.Brightness = lightData.BaseBright + rng:NextNumber(-0.3, 0.3)
 		lightData.Light.Range = lightData.BaseRange + rng:NextNumber(-1, 1)
+		
+		if ScannerEnable then
+			lightData.Light.Enabled = true
+		else
+			lightData.Light.Enabled = false
+		end
 	end
 
 	-- ==========================================
@@ -198,7 +208,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 				local entAtt = Instance.new("Attachment", workspace.Terrain)
 				entAtt.Name = "ESP_Att_" .. v.Name
 
-				local Clone = glowpartBB:Clone()
+				local Clone: BillboardGui = glowpartBB:Clone()
 				Clone.Parent = guis -- Put inside the GUI to keep workspace clean
 				Clone.Name = "GlowPart_" .. v.Name
 				Clone.Adornee = entAtt -- Connect the Billboard to the Attachment
@@ -214,6 +224,11 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			-- Update the Attachment position instead of the GUI offset
 			if activeGlowParts[v] then
 				activeGlowParts[v].Att.WorldPosition = v:GetPivot().Position
+				if ScannerEnable then
+					activeGlowParts[v].Gui.Enabled = true
+				else
+					activeGlowParts[v].Gui.Enabled = false
+				end
 			end
 		end
 	end
@@ -274,7 +289,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if not ScannerEnable then
 		valueSpeed = 0
 		stt = 0
-	elseif EntityCount == 0 then -- Fixed: Removed invalid table math
+	elseif EntityCount == 0 or EntitylistCount < 0 then -- Fixed: Removed invalid table math
 		valueSpeed = normalspeed
 		stt = 0.885
 	elseif EntityCount > 0 then
