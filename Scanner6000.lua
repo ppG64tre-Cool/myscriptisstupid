@@ -43,7 +43,8 @@ colorEffect.Parent = game:GetService("Lighting")
 local Entitylist = {
 	"A60", "A120", "monster2", "AmbushMoving", "CeaseMoving", 
 	"Specimen 8", "Frostbite", "Rebound", "RipperMoving", 
-	"RushMoving", "Silence", "Eyes", "BackdoorRush", "SingularityZone"
+	"RushMoving", "Silence", "Eyes", "BackdoorRush", "SingularityZone",
+	"BackdoorLookman"
 }
 
 local EntitylistCount = {
