@@ -23,14 +23,6 @@ local resultShake = numbershaky
 
 local rng = Random.new()
 
--- Screen Shake
-RunService.RenderStepped:Connect(function()
-	guis.staticPng.Position = svapos + UDim2.new(
-		rng:NextNumber(-resultShake, resultShake), 0, 
-		rng:NextNumber(-resultShake, resultShake), 0
-	)
-end)
-
 local normalspeed = 2.35
 local foundspeed = 3
 guis.Sound:Play()
@@ -90,7 +82,7 @@ local function checkAndAddLight(child: Instance)
 	elseif child:IsA("Model") and child.Name == "FuseObtain" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	elseif child:IsA("Model") and child.Name == "imstuff" then
-	createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	end
 end
 
@@ -122,13 +114,52 @@ local activeGlowParts = {}
 
 local Highlight = {}
 
+-- Value i made
+
 local valueSpeed = 2.35
 
 local stt = 0.885
 
+local ScannerEnable = true
+
+
+-- toggle Scanner
+
+local function toggleScanner()
+	ScannerEnable = not ScannerEnable
+end
+
+-- toggle keybind
+
+UIP.InputBegan:Connect(function(input, processed)
+	if processed then return end
+	if input.KeyCode == Enum.KeyCode.T then
+		toggleScanner()
+	end
+end)
+
+ScannerEnable.Changed:Connect(function()
+	if ScannerEnable then
+		numberoftanpo.Value = 0
+		if guis:FindFirstChild("turnon") and guis.turnon:IsA("Sound") then
+			guis.turnon:Play()
+		end
+	else
+		if guis:FindFirstChild("turnoff") and guis.turnoff:IsA("Sound") then
+			guis.turnoff:Play()
+		end
+	end
+end)
+
+
 -- Main RenderStepped Loop
 local RenderCheck
 RenderCheck = RunService.RenderStepped:Connect(function()
+	
+	guis.staticPng.Position = svapos + UDim2.new(
+		rng:NextNumber(-resultShake, resultShake), 0, 
+		rng:NextNumber(-resultShake, resultShake), 0
+	)
 
 	if numberoftanpo.Value then
 		guis.staticPng.ImageTransparency = numberoftanpo.Value
@@ -193,41 +224,41 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			end
 		end
 	end
-	
+
 	local currt3DEntitytrack = {}
-	
+
 	if workspace:FindFirstChild("CurrentRooms") then
 		local currentroom: Folder = workspace.CurrentRooms
-		
+
 		for i, v in pairs(currentroom:GetDescendants()) do
-			
+
 			currt3DEntitytrack[v] = true
-			
+
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
-				
+
 				if nil  then
 					return
 				end
-				
+
 				if Highlight[v] then
 					return
 				end
-				
-				
+
+
 				local Model = v
-				
+
 				local highlightRig = Instance.new("Highlight", Model)
 				highlightRig.FillTransparency = 0.875
 				highlightRig.OutlineColor = Color3.new(1, 0.333333, 0)
 				highlightRig.OutlineTransparency = 1
 				highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 				highlightRig.Enabled = true
-				
+
 				Highlight[v] = highlightRig
 			end
 		end
 	end
-	
+
 	-- Clean up destroyed entities
 	for entity, espData in pairs(activeGlowParts) do
 		if not currentlyTrackedEntities[entity] then
@@ -236,7 +267,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			activeGlowParts[entity] = nil
 		end
 	end
-	
+
 	for i, v in pairs(Highlight) do
 		if not currt3DEntitytrack[i] then
 			if Highlight[v] ~= nil then
@@ -244,15 +275,18 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			end
 		end
 	end
-	
+
 	guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 17.75
 	numberoftanpo.Value += (stt - numberoftanpo.Value) / 17.75
 
 	-- Audio Speed based on Entities
-	if EntityCount == 0 or EntityCount < 0 then
+	if not ScannerEnable then
+		valueSpeed = 0
+		stt = 0
+	elseif EntityCount == 0 or EntitylistCount < 0 then
 		valueSpeed = normalspeed
 		stt = 0.885
-	else
+	elseif EntityCount > 0 then
 		valueSpeed = foundspeed
 		stt = 0.7275
 	end
