@@ -249,24 +249,20 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		for i, v in pairs(currentroom:GetDescendants()) do
 
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
+				if not Highlight[v] then
+					currt3DEntitytrack[v] = true
 
-				-- Fixed: use continue instead of return to prevent breaking the RenderStepped loop
-				if Highlight[v] then
-					return
+					local Model = v
+
+					local highlightRig = Instance.new("Highlight", Model)
+					highlightRig.FillTransparency = 0.875
+					highlightRig.OutlineColor = Color3.new(1, 0.333333, 0)
+					highlightRig.OutlineTransparency = 1
+					highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					highlightRig.Enabled = true
+
+					Highlight[v] = highlightRig
 				end
-
-				currt3DEntitytrack[v] = true
-
-				local Model = v
-
-				local highlightRig = Instance.new("Highlight", Model)
-				highlightRig.FillTransparency = 0.875
-				highlightRig.OutlineColor = Color3.new(1, 0.333333, 0)
-				highlightRig.OutlineTransparency = 1
-				highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-				highlightRig.Enabled = true
-
-				Highlight[v] = highlightRig
 			end
 		end
 	end
