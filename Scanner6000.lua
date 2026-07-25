@@ -23,6 +23,14 @@ local resultShake = numbershaky
 
 local rng = Random.new()
 
+RunService.RenderStepped:Connect(function()
+	
+	guis.staticPng.Position = svapos + UDim2.new(
+		rng:NextNumber(-resultShake, resultShake), 0, 
+		rng:NextNumber(-resultShake, resultShake), 0
+	)
+end)
+
 local normalspeed = 2.35
 local foundspeed = 3
 guis.Sound:Play()
@@ -155,11 +163,6 @@ end)
 -- Main RenderStepped Loop
 local RenderCheck
 RenderCheck = RunService.RenderStepped:Connect(function()
-	
-	guis.staticPng.Position = svapos + UDim2.new(
-		rng:NextNumber(-resultShake, resultShake), 0, 
-		rng:NextNumber(-resultShake, resultShake), 0
-	)
 
 	if numberoftanpo.Value then
 		guis.staticPng.ImageTransparency = numberoftanpo.Value
