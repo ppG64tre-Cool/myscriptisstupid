@@ -190,7 +190,7 @@ local function checkWorkspaceEntity(child: Instance)
 end
 
 -- Hook up event listeners for map tracking
-if workspace:FindFirstChild("CurrentRooms") then
+if workspace:WaitForChild("CurrentRooms") then
 	-- Scan existing
 	for _, room in pairs(workspace.CurrentRooms:GetChildren()) do
 		for _, child in pairs(room:GetDescendants()) do
