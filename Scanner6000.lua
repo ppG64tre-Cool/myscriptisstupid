@@ -248,14 +248,14 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 		for i, v in pairs(currentroom:GetDescendants()) do
 
-			currt3DEntitytrack[v] = true
-
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
 
 				-- Fixed: use continue instead of return to prevent breaking the RenderStepped loop
 				if Highlight[v] then
 					continue
 				end
+
+				currt3DEntitytrack[v] = true
 
 				local Model = v
 
@@ -288,6 +288,14 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			end
 			Highlight[i] = nil
 		end
+
+		if Highlight[i] and Highlight[i]:IsA("Highlight") then
+			if ScannerEnable then
+				Highlight[i].Enabled = true
+			else
+				Highlight[i].Enabled = false
+			end	
+		end		
 	end
 
 	guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 17.75
