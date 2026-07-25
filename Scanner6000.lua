@@ -303,12 +303,12 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if not ScannerEnable then
 		valueSpeed = 0
 		stt = 0
-	elseif EntityCount == 0 or EntitylistCount < 0 then -- Fixed: Removed invalid table math
+	elseif EntityCount == 0 then -- Fixed: Removed invalid table math
 		valueSpeed = normalspeed
 		stt = 0.885
 	elseif EntityCount > 0 then
 		valueSpeed = foundspeed
-		stt = 0.7275
+		stt = 0.7175
 	end
 
 end)
