@@ -16,7 +16,6 @@ local guis = game:GetObjects("rbxassetid://77380567008109")[1]
 guis.Parent = localplayer:WaitForChild("PlayerGui")
 guis.ResetOnSpawn = false
 
-
 local svapos = guis.staticPng.Position
 local numbershaky = 10
 local resultShake = numbershaky
@@ -24,7 +23,6 @@ local resultShake = numbershaky
 local rng = Random.new()
 
 RunService.RenderStepped:Connect(function()
-	
 	guis.staticPng.Position = svapos + UDim2.new(
 		rng:NextNumber(-resultShake, resultShake), 0, 
 		rng:NextNumber(-resultShake, resultShake), 0
@@ -119,34 +117,18 @@ lige.Shadows = false
 
 -- ESP TRACKING TABLE
 local activeGlowParts = {}
-
 local Highlight = {}
 
 -- Value i made
-
 local valueSpeed = 2.35
-
 local stt = 0.885
-
 local ScannerEnable = true
 
-
 -- toggle Scanner
-
 local function toggleScanner()
 	ScannerEnable = not ScannerEnable
-end
-
--- toggle keybind
-
-UIP.InputBegan:Connect(function(input, processed)
-	if processed then return end
-	if input.KeyCode == Enum.KeyCode.T then
-		toggleScanner()
-	end
-end)
-
-ScannerEnable.Changed:Connect(function()
+	
+	-- Fixed: Moved the logic here since Booleans don't have a .Changed event
 	if ScannerEnable then
 		numberoftanpo.Value = 0
 		if guis:FindFirstChild("turnon") and guis:FindFirstChild("turnon"):IsA("Sound") then
@@ -156,6 +138,14 @@ ScannerEnable.Changed:Connect(function()
 		if guis:FindFirstChild("turnoff") and guis:FindFirstChild("turnoff"):IsA("Sound") then
 			guis:FindFirstChild("turnoff"):Play()
 		end
+	end
+end
+
+-- toggle keybind
+UIP.InputBegan:Connect(function(input, processed)
+	if processed then return end
+	if input.KeyCode == Enum.KeyCode.T then
+		toggleScanner()
 	end
 end)
 
@@ -239,14 +229,10 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
 
-				if nil  then
-					return
-				end
-
+				-- Fixed: use continue instead of return to prevent breaking the RenderStepped loop
 				if Highlight[v] then
-					return
+					continue
 				end
-
 
 				local Model = v
 
@@ -271,11 +257,13 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		end
 	end
 
+	-- Fixed: Correct object references for table cleanup
 	for i, v in pairs(Highlight) do
 		if not currt3DEntitytrack[i] then
-			if Highlight[v] ~= nil then
-				Highlight[v]:Destroy()
+			if v ~= nil then
+				v:Destroy()
 			end
+			Highlight[i] = nil
 		end
 	end
 
@@ -286,7 +274,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if not ScannerEnable then
 		valueSpeed = 0
 		stt = 0
-	elseif EntityCount == 0 or EntitylistCount < 0 then
+	elseif EntityCount == 0 then -- Fixed: Removed invalid table math
 		valueSpeed = normalspeed
 		stt = 0.885
 	elseif EntityCount > 0 then
