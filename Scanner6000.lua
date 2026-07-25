@@ -60,7 +60,6 @@ local function createTrackedLight(TargetInstance: Instance, ColorCustom: Color3,
 	if not TargetInstance then return end
 	if activeItemLights[TargetInstance] then return end
 
-	-- FIXED: Attachments must be parented to Terrain or a Part, not a Folder
 	local att = Instance.new("Attachment", workspace.Terrain)
 	att.Name = "LightningSplashLIGHT"
 
@@ -129,7 +128,6 @@ local ScannerEnable = true
 local function toggleScanner()
 	ScannerEnable = not ScannerEnable
 
-	-- Fixed: Moved the logic here since Booleans don't have a .Changed event
 	if ScannerEnable then
 		numberoftanpo.Value = 0
 		if guis:FindFirstChild("turnon") and guis:FindFirstChild("turnon"):IsA("Sound") then
@@ -168,11 +166,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	end
 
 	if lige then
-		if ScannerEnable then
-			lige.Enabled = true
-		else	
-			lige.Enabled = false
-		end
+		lige.Enabled = ScannerEnable
 	end
 
 	-- ==========================================
@@ -191,11 +185,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		lightData.Light.Brightness = lightData.BaseBright + rng:NextNumber(-0.3, 0.3)
 		lightData.Light.Range = lightData.BaseRange + rng:NextNumber(-1, 1)
 		
-		if ScannerEnable then
-			lightData.Light.Enabled = true
-		else
-			lightData.Light.Enabled = false
-		end
+		lightData.Light.Enabled = ScannerEnable
 	end
 
 	-- ==========================================
@@ -213,15 +203,14 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 			-- If ESP isn't created yet
 			if not activeGlowParts[v] then
-				-- Create an anchor attachment in Terrain
 				local entAtt = Instance.new("Attachment", workspace.Terrain)
 				entAtt.Name = "ESP_Att_" .. v.Name
 
 				local Clone: BillboardGui = glowpartBB:Clone()
-				Clone.Parent = guis -- Put inside the GUI to keep workspace clean
+				Clone.Parent = guis 
 				Clone.Name = "GlowPart_" .. v.Name
-				Clone.Adornee = entAtt -- Connect the Billboard to the Attachment
-				Clone.StudsOffsetWorldSpace = Vector3.new(0, 0, 0) -- Reset offset to prevent glitching
+				Clone.Adornee = entAtt 
+				Clone.StudsOffsetWorldSpace = Vector3.new(0, 0, 0) 
 				Clone.Enabled = true
 
 				activeGlowParts[v] = {
@@ -233,11 +222,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			-- Update the Attachment position instead of the GUI offset
 			if activeGlowParts[v] then
 				activeGlowParts[v].Att.WorldPosition = v:GetPivot().Position
-				if ScannerEnable then
-					activeGlowParts[v].Gui.Enabled = true
-				else
-					activeGlowParts[v].Gui.Enabled = false
-				end
+				activeGlowParts[v].Gui.Enabled = ScannerEnable
 			end
 		end
 	end
@@ -250,9 +235,11 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		for _, v in pairs(currentroom:GetDescendants()) do
 
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
-				if not HighlightE[v] and currt3DEntitytrack[v] == nil then
-					currt3DEntitytrack[v] = true
+				
+				-- FIXED: This MUST be outside the if statement so it tracks every frame!
+				currt3DEntitytrack[v] = true
 
+				if not HighlightE[v] then
 					local Model = v
 
 					local highlightRig = Instance.new("Highlight", Model)
@@ -264,7 +251,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 					HighlightE[v] = {
 						highlightrigmonster = highlightRig;
-						}
+					}
 				end
 			end
 		end
@@ -279,16 +266,16 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		end
 	end
 
-	-- Fixed: Correct object references for table cleanup
+	-- Cleanup Highlights
 	for i, v in pairs(HighlightE) do
 		if currt3DEntitytrack[i] == nil then
 			if v.highlightrigmonster then
 				v.highlightrigmonster:Destroy()
 			end
 			HighlightE[i] = nil
-		end
-		if v.highlightrigmonster and v.highlightrigmonster:IsA("Highlight") then
-			if ScannerEnable then
+		else
+			-- Apply scanner enable status if it still exists
+			if v.highlightrigmonster and v.highlightrigmonster:IsA("Highlight") then
 				v.highlightrigmonster.Enabled = ScannerEnable
 			end
 		end	
@@ -302,17 +289,18 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		numberoftanpo.Value += (stt - numberoftanpo.Value) / 17.75
 	end
 
-	if guis.Sound.PlaybackSpeed == 0 then
-		Volume = 0
+	-- FIXED: Targeting the actual audio Volume property
+	if guis.Sound.PlaybackSpeed <= 0.1 then 
+		guis.Sound.Volume = 0
 	else
-		Volume = 0.675
+		guis.Sound.Volume = 0.675
 	end
 
 	-- Audio Speed based on Entities
 	if not ScannerEnable then
 		valueSpeed = 0
 		stt = 0
-	elseif EntityCount == 0 then -- Fixed: Removed invalid table math
+	elseif EntityCount == 0 then 
 		valueSpeed = normalspeed
 		stt = 0.885
 	elseif EntityCount > 0 then
