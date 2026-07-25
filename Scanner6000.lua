@@ -96,6 +96,8 @@ local function toggleScanner()
 	end
 end
 
+toggleScanner()
+
 -- toggle keybind
 UIP.InputBegan:Connect(function(input, processed)
 	if processed then return end
@@ -305,3 +307,22 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	end
 
 end)
+
+--- custom badge by viuy
+
+local CustomAchievements = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/DOORS-Custom-Achievements/main/init.luau"))()
+
+CustomAchievements:Grant({
+    Identifier = "NVCS-6000",
+    Title = "Did You Happy?",
+    Desc = "This Thing So Useful.",
+    Reason = "Reach The End Of Th-",
+    Image = "rbxassetid://12309073114"
+}, {
+    CheckOwned = true,
+    Remember = true
+})
+
+
+
+
