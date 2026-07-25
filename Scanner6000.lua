@@ -261,7 +261,9 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 					highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 					highlightRig.Enabled = true
 
-					Highlight[v] = highlightRig
+					Highlight[v] = {
+						highlightrigmonster = highlightRig;
+						}
 				end
 			end
 		end
@@ -279,8 +281,8 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	-- Fixed: Correct object references for table cleanup
 	for i, v in pairs(Highlight) do
 		if not currt3DEntitytrack[i] then
-			if v ~= nil then
-				v:Destroy()
+			if v.highlightrigmonster then
+				v.highlightrigmonster:Destroy()
 			end
 			Highlight[i] = nil
 		end
