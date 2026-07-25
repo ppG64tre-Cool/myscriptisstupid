@@ -166,6 +166,14 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		attachment.WorldPosition = workspace.CurrentCamera.CFrame.Position
 	end
 
+	if lige then
+		if ScannerEnable then
+			lige.Enable = true
+		else	
+			lige.Enable = false
+		end
+	end
+
 	-- ==========================================
 	-- REAL-TIME KEY/DOOR LIGHT UPDATES & FLICKER
 	-- ==========================================
