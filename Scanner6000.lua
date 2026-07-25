@@ -252,7 +252,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 				-- Fixed: use continue instead of return to prevent breaking the RenderStepped loop
 				if Highlight[v] then
-					continue
+					return
 				end
 
 				currt3DEntitytrack[v] = true
