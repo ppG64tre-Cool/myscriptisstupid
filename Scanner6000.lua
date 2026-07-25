@@ -53,54 +53,10 @@ local EntitylistCount = {
 	"RushMoving", "BackdoorRush" , "Death"
 }
 
--- TABLE FOR REAL-TIME LIGHT TRACKING
+-- TABLES FOR TRACKING (OPTIMIZED)
 local activeItemLights = {}
-
-local function createTrackedLight(TargetInstance: Instance, ColorCustom: Color3, bright: number, range: number)
-	if not TargetInstance then return end
-	if activeItemLights[TargetInstance] then return end
-
-	local att = Instance.new("Attachment", workspace.Terrain)
-	att.Name = "LightningSplashLIGHT"
-
-	local pointlight = Instance.new("PointLight", att)
-	pointlight.Range = range
-	pointlight.Brightness = bright
-	pointlight.Color = ColorCustom or Color3.new(1, 1, 1)
-
-	activeItemLights[TargetInstance] = {
-		Att = att,
-		Light = pointlight,
-		BaseBright = bright,
-		BaseRange = range
-	}
-end
-
-local function checkAndAddLight(child: Instance)
-	if child:IsA("Model") and child.Name == "KeyObtain" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
-	elseif child:IsA("Model") and child.Name == "LeverForGate" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
-	elseif child:IsA("BasePart") and child.Name == "RoomExit" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 15)
-	elseif child:IsA("BasePart") and child.Name == "BookBase" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
-	elseif child:IsA("Model") and child.Name == "FuseObtain" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
-	elseif child:IsA("BasePart") and child.Name == "imstuff" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
-	end
-end
-
--- Hook up map tracking
-if workspace:FindFirstChild("CurrentRooms") then
-	for _, room in pairs(workspace.CurrentRooms:GetChildren()) do
-		for _, child in pairs(room:GetDescendants()) do
-			checkAndAddLight(child)
-		end
-	end
-	workspace.CurrentRooms.DescendantAdded:Connect(checkAndAddLight)
-end
+local activeGlowParts = {}
+local HighlightE = {}
 
 local glowpartBB = guis.HelloHowdidYouSeethis:Clone()
 
@@ -114,10 +70,6 @@ lige.Range = 120
 lige.Brightness = 1
 lige.Color = Color3.new(1, 1, 1)
 lige.Shadows = false
-
--- ESP TRACKING TABLE
-local activeGlowParts = {}
-local HighlightE = {}
 
 -- Value i made
 local valueSpeed = 2.35
@@ -153,7 +105,113 @@ UIP.InputBegan:Connect(function(input, processed)
 end)
 
 
--- Main RenderStepped Loop
+-- ==========================================
+-- EVENT-DRIVEN TRACKING FUNCTIONS (NO LAG)
+-- ==========================================
+
+local function createTrackedLight(TargetInstance: Instance, ColorCustom: Color3, bright: number, range: number)
+	if not TargetInstance then return end
+	if activeItemLights[TargetInstance] then return end
+
+	local att = Instance.new("Attachment", workspace.Terrain)
+	att.Name = "LightningSplashLIGHT"
+
+	local pointlight = Instance.new("PointLight", att)
+	pointlight.Range = range
+	pointlight.Brightness = bright
+	pointlight.Color = ColorCustom or Color3.new(1, 1, 1)
+
+	activeItemLights[TargetInstance] = {
+		Att = att,
+		Light = pointlight,
+		BaseBright = bright,
+		BaseRange = range
+	}
+end
+
+-- 1. Checks Rooms for Items and Figures
+local function checkAndCacheRoomDescendant(child: Instance)
+	if child:IsA("Model") and child.Name == "KeyObtain" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
+	elseif child:IsA("Model") and child.Name == "LeverForGate" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
+	elseif child:IsA("BasePart") and child.Name == "RoomExit" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 15)
+	elseif child:IsA("BasePart") and child.Name == "BookBase" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+	elseif child:IsA("Model") and child.Name == "FuseObtain" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+	elseif child:IsA("BasePart") and child.Name == "imstuff" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+		
+	-- Figure Cache Check
+	elseif child:IsA("Model") and (child.Name == "FigureRig" or child.Name == "FigureRagdoll") then
+		if not HighlightE[child] then
+			local highlightRig = Instance.new("Highlight", child)
+			highlightRig.FillTransparency = 0.875
+			highlightRig.OutlineColor = Color3.new(1, 0.333333, 0)
+			highlightRig.OutlineTransparency = 1
+			highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+			highlightRig.Enabled = true
+
+			HighlightE[child] = {
+				highlightrigmonster = highlightRig;
+			}
+		end
+	end
+end
+
+-- 2. Checks Workspace for Active Entities (Rush, Ambush, etc.)
+local function checkWorkspaceEntity(child: Instance)
+	if child:IsA("Model") and table.find(Entitylist, child.Name) then
+		if not activeGlowParts[child] then
+			local entAtt = Instance.new("Attachment", workspace.Terrain)
+			entAtt.Name = "ESP_Att_" .. child.Name
+
+			local Clone: BillboardGui = glowpartBB:Clone()
+			Clone.Parent = guis 
+			Clone.Name = "GlowPart_" .. child.Name
+			Clone.Adornee = entAtt 
+			Clone.StudsOffsetWorldSpace = Vector3.new(0, 0, 0) 
+			Clone.Enabled = true
+			
+			local isCounted = false
+			if table.find(EntitylistCount, child.Name) then
+				isCounted = true
+			end
+
+			activeGlowParts[child] = {
+				Gui = Clone,
+				Att = entAtt,
+				Counted = isCounted
+			}
+		end
+	end
+end
+
+-- Hook up event listeners for map tracking
+if workspace:FindFirstChild("CurrentRooms") then
+	-- Scan existing
+	for _, room in pairs(workspace.CurrentRooms:GetChildren()) do
+		for _, child in pairs(room:GetDescendants()) do
+			checkAndCacheRoomDescendant(child)
+		end
+	end
+	-- Listen for new additions
+	workspace.CurrentRooms.DescendantAdded:Connect(checkAndCacheRoomDescendant)
+end
+
+-- Hook up event listeners for Entities spawning
+for _, v in pairs(workspace:GetChildren()) do
+	checkWorkspaceEntity(v)
+end
+workspace.ChildAdded:Connect(checkWorkspaceEntity)
+
+
+
+-- ==========================================
+-- MAIN RENDERSTEPPED (VISUAL UPDATES ONLY)
+-- ==========================================
 local RenderCheck
 RenderCheck = RunService.RenderStepped:Connect(function()
 
@@ -169,11 +227,9 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		lige.Enabled = ScannerEnable
 	end
 
-	-- ==========================================
-	-- REAL-TIME KEY/DOOR LIGHT UPDATES & FLICKER
-	-- ==========================================
+	-- LIGHT UPDATES
 	for item, lightData in pairs(activeItemLights) do
-		if not item or not item.Parent then
+		if not item or item.Parent == nil then
 			if lightData.Att then lightData.Att:Destroy() end
 			activeItemLights[item] = nil
 			continue
@@ -184,103 +240,44 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 
 		lightData.Light.Brightness = lightData.BaseBright + rng:NextNumber(-0.3, 0.3)
 		lightData.Light.Range = lightData.BaseRange + rng:NextNumber(-1, 1)
-		
 		lightData.Light.Enabled = ScannerEnable
 	end
 
-	-- ==========================================
-	-- ENTITY ESP TRACKING (FIXED ADORNEE OFFSET)
-	-- ==========================================
+	-- ENTITY ESP UPDATES & COUNTING
 	local EntityCount = 0
-	local currentlyTrackedEntities = {}
 
-	for _, v in pairs(workspace:GetChildren()) do
-		if v:IsA("Model") and table.find(Entitylist, v.Name) then
-			if table.find(EntitylistCount, v.Name) then
-				EntityCount += 1
-			end
-			currentlyTrackedEntities[v] = true
-
-			-- If ESP isn't created yet
-			if not activeGlowParts[v] then
-				local entAtt = Instance.new("Attachment", workspace.Terrain)
-				entAtt.Name = "ESP_Att_" .. v.Name
-
-				local Clone: BillboardGui = glowpartBB:Clone()
-				Clone.Parent = guis 
-				Clone.Name = "GlowPart_" .. v.Name
-				Clone.Adornee = entAtt 
-				Clone.StudsOffsetWorldSpace = Vector3.new(0, 0, 0) 
-				Clone.Enabled = true
-
-				activeGlowParts[v] = {
-					Gui = Clone,
-					Att = entAtt
-				}
-			end
-
-			-- Update the Attachment position instead of the GUI offset
-			if activeGlowParts[v] then
-				activeGlowParts[v].Att.WorldPosition = v:GetPivot().Position
-				activeGlowParts[v].Gui.Enabled = ScannerEnable
-			end
-		end
-	end
-
-	local currt3DEntitytrack = {}
-
-	if workspace:FindFirstChild("CurrentRooms") then
-		local currentroom: Folder = workspace.CurrentRooms
-
-		for _, v in pairs(currentroom:GetDescendants()) do
-
-			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
-				
-				-- FIXED: This MUST be outside the if statement so it tracks every frame!
-				currt3DEntitytrack[v] = true
-
-				if not HighlightE[v] then
-					local Model = v
-
-					local highlightRig = Instance.new("Highlight", Model)
-					highlightRig.FillTransparency = 0.875
-					highlightRig.OutlineColor = Color3.new(1, 0.333333, 0)
-					highlightRig.OutlineTransparency = 1
-					highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-					highlightRig.Enabled = true
-
-					HighlightE[v] = {
-						highlightrigmonster = highlightRig;
-					}
-				end
-			end
-		end
-	end
-
-	-- Clean up destroyed entities
 	for entity, espData in pairs(activeGlowParts) do
-		if currentlyTrackedEntities[entity] == nil then
+		-- If the entity was destroyed, clean it up
+		if entity.Parent == nil then
 			if espData.Gui then espData.Gui:Destroy() end
 			if espData.Att then espData.Att:Destroy() end
 			activeGlowParts[entity] = nil
+		else
+			-- Entity exists, update position
+			espData.Att.WorldPosition = entity:GetPivot().Position
+			espData.Gui.Enabled = ScannerEnable
+			
+			if espData.Counted then
+				EntityCount += 1
+			end
 		end
 	end
 
-	-- Cleanup Highlights
-	for i, v in pairs(HighlightE) do
-		if currt3DEntitytrack[i] == nil then
+	-- HIGHLIGHT UPDATES (FIGURE)
+	for entity, v in pairs(HighlightE) do
+		if entity.Parent == nil then
 			if v.highlightrigmonster then
 				v.highlightrigmonster:Destroy()
 			end
-			HighlightE[i] = nil
+			HighlightE[entity] = nil
 		else
-			-- Apply scanner enable status if it still exists
 			if v.highlightrigmonster and v.highlightrigmonster:IsA("Highlight") then
 				v.highlightrigmonster.Enabled = ScannerEnable
 			end
 		end	
 	end
 
+	-- AUDIO & VALUE LERPING
 	if guis.Sound.PlaybackSpeed ~= valueSpeed then
 		guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 17.75
 	end
@@ -289,14 +286,13 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		numberoftanpo.Value += (stt - numberoftanpo.Value) / 17.75
 	end
 
-	-- FIXED: Targeting the actual audio Volume property
 	if guis.Sound.PlaybackSpeed <= 0.1 then 
 		guis.Sound.Volume = 0
 	else
 		guis.Sound.Volume = 0.675
 	end
 
-	-- Audio Speed based on Entities
+	-- AUDIO SPEED STATES
 	if not ScannerEnable then
 		valueSpeed = 0
 		stt = 0
