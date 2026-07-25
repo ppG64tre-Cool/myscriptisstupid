@@ -117,7 +117,7 @@ lige.Shadows = false
 
 -- ESP TRACKING TABLE
 local activeGlowParts = {}
-local Highlight = {}
+local HighlightE = {}
 
 -- Value i made
 local valueSpeed = 2.35
@@ -246,10 +246,10 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if workspace:FindFirstChild("CurrentRooms") then
 		local currentroom: Folder = workspace.CurrentRooms
 
-		for i, v in pairs(currentroom:GetDescendants()) do
+		for _, v in pairs(currentroom:GetDescendants()) do
 
 			if v:IsA("Model") and (v.Name == "FigureRig" or v.Name == "FigureRagdoll") then
-				if not Highlight[v] then
+				if not Highlight[v] and not currt3DEntitytrack then
 					currt3DEntitytrack[v] = true
 
 					local Model = v
@@ -261,7 +261,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 					highlightRig.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 					highlightRig.Enabled = true
 
-					Highlight[v] = {
+					HighlightE[v] = {
 						highlightrigmonster = highlightRig;
 						}
 				end
@@ -279,19 +279,19 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	end
 
 	-- Fixed: Correct object references for table cleanup
-	for i, v in pairs(Highlight) do
+	for i, v in pairs(HighlightE) do
 		if not currt3DEntitytrack[i] then
 			if v.highlightrigmonster then
 				v.highlightrigmonster:Destroy()
 			end
-			Highlight[i] = nil
+			HighlightE[i] = nil
 		end
 
 		if Highlight[i] and Highlight[i]:IsA("Highlight") then
 			if ScannerEnable then
-				Highlight[i].Enabled = true
+				HighlightE[i].Enabled = true
 			else
-				Highlight[i].Enabled = false
+				HighlightE[i].Enabled = false
 			end	
 		end		
 	end
