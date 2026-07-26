@@ -6,23 +6,51 @@ local function genname(long: number)
 	return name
 end
 
+-- Values Of Closest Entity
+
+local teapotofentity: number = 1
+
+local tanpoofentity: number = 1
+
+local vulom = 0
+
+local changename = true
+
 local localplayer = game.Players.LocalPlayer
 local mouse = localplayer:GetMouse()
 local UIP = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
-local guis: ScreenGui = game:GetObjects("rbxassetid://77380567008109")[1]
+local guis: ScreenGui? = game:GetObjects("rbxassetid://77380567008109")[1]
 guis.Parent = localplayer:WaitForChild("PlayerGui")
 guis.ResetOnSpawn = false
 
-local svapos = guis.staticPng.Position
+local CameraAtt = Instance.new("Attachment", workspace.Terrain)
+
+CameraAtt.Name = "CameraAtt"
+
+local function UpdateCameraPos()
+	CameraAtt.WorldPosition = workspace.Camera.CFrame.Position
+	CameraAtt.WorldOrientation = Vector3.new(0, 0, 0)
+end
+
+local svapos: UDim2? = guis.staticPng.Position
+local svaposE: UDim2? = guis.staticPngEntity.Position
 local numbershaky = 10
 local resultShake = numbershaky
 
+local StaticSoundE: Sound? = guis.EntityStatic
+
 local rng = Random.new()
+
+StaticSoundE:Play()
 
 RunService.RenderStepped:Connect(function()
 	guis.staticPng.Position = svapos + UDim2.new(
+		rng:NextNumber(-resultShake, resultShake), 0, 
+		rng:NextNumber(-resultShake, resultShake), 0
+	)
+	guis.staticPngEntity.Position = svaposE + UDim2.new(
 		rng:NextNumber(-resultShake, resultShake), 0, 
 		rng:NextNumber(-resultShake, resultShake), 0
 	)
@@ -102,6 +130,8 @@ local function toggleScanner()
 			guis.Enabled = true
 		end
 		
+		teapotofentity = 1
+
 		-- Update Mobile Colors
 		if mobileBtn and mobileStroke then
 			mobileBtn.BackgroundColor3 = mobileColors.OnBg
@@ -114,7 +144,7 @@ local function toggleScanner()
 			colorEffect.Enabled = false
 			guis.Enabled = false
 		end
-		
+
 		-- Update Mobile Colors
 		if mobileBtn and mobileStroke then
 			mobileBtn.BackgroundColor3 = mobileColors.OffBg
@@ -146,7 +176,7 @@ if UIP.TouchEnabled then
 	toggleBtn.Size = UDim2.new(0, 75, 0, 75) -- Slightly larger for tap accuracy
 	toggleBtn.Position = UDim2.new(1, -95, 0.5, 0)
 	toggleBtn.AnchorPoint = Vector2.new(0, 0.5)
-	
+
 	-- Initializing Colors (Off state will be handled by the immediate toggleScanner call above)
 	toggleBtn.BackgroundColor3 = mobileColors.OnBg
 	toggleBtn.BackgroundTransparency = 0.3
@@ -160,7 +190,7 @@ if UIP.TouchEnabled then
 	local corner = Instance.new("UICorner")
 	corner.CornerRadius = UDim.new(0.3, 0) -- Rounded
 	corner.Parent = toggleBtn
-	
+
 	local stroke = Instance.new("UIStroke")
 	stroke.Color = mobileColors.OnText
 	stroke.Thickness = 2
@@ -211,8 +241,8 @@ local function checkAndCacheRoomDescendant(child: Instance)
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
 	elseif child:IsA("BasePart") and child.Name == "imstuff" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
-		
-	-- Figure Cache Check
+
+		-- Figure Cache Check
 	elseif child:IsA("Model") and (child.Name == "FigureRig" or child.Name == "FigureRagdoll") then
 		if not HighlightE[child] then
 			local highlightRig = Instance.new("Highlight", child)
@@ -242,7 +272,7 @@ local function checkWorkspaceEntity(child: Instance)
 			Clone.Adornee = entAtt 
 			Clone.StudsOffsetWorldSpace = Vector3.new(0, 0, 0) 
 			Clone.Enabled = true
-			
+
 			local isCounted = false
 			if table.find(EntitylistCount, child.Name) then
 				isCounted = true
@@ -281,6 +311,28 @@ workspace.ChildAdded:Connect(checkWorkspaceEntity)
 -- ==========================================
 local RenderCheck
 RenderCheck = RunService.RenderStepped:Connect(function()
+	
+	-- Value
+	local closestEntity = nil
+	local closestDistance = math.huge
+	local closestAttachment = nil
+	
+	
+	-- change name all time
+	
+	if changename then
+		guis.Name = genname()
+	end
+	
+	-- ======================== --
+	--	UPDATE CAMERA POSITION  --
+	-- ======================== --
+	
+	-- do not edit this
+	
+	UpdateCameraPos()
+	
+	------------------------------
 
 	if numberoftanpo.Value then
 		guis.staticPng.ImageTransparency = numberoftanpo.Value
@@ -323,9 +375,18 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			-- Entity exists, update position
 			espData.Att.WorldPosition = entity:GetPivot().Position
 			espData.Gui.Enabled = ScannerEnable
-			
+
 			if espData.Counted then
 				EntityCount += 1
+				
+				pcall(function()
+					closestEntity = entity
+					local distance = (attachment.WorldPosition - espData.Att.WorldPosition).Magnitude
+					if distance < closestDistance then
+						closestDistance = distance
+						closestAttachment = espData.Att
+					end
+				end)
 			end
 		end
 	end
@@ -343,12 +404,38 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 			end
 		end	
 	end
+	
+	if closestAttachment then
+		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
+		
+		result += 275
+		
+		if result < 1000 then
+			local A = math.clamp(result / 1000, 0, 0.3)
+			
+			tanpoofentity = 1 - A
+		end
+	else
+		tanpoofentity = 1
+	end
+	
+	StaticSoundE.Volume = vulom
+	
+	guis.staticPngEntity.ImageTransparency = teapotofentity.Value
+	
+	
 
 	-- AUDIO & VALUE LERPING
 	if guis.Sound.PlaybackSpeed ~= valueSpeed then
 		guis.Sound.PlaybackSpeed += (valueSpeed - guis.Sound.PlaybackSpeed) / 17.75
 	end
-			
+	
+	if teapotofentity ~= tanpoofentity then
+		numberoftanpo += (tanpoofentity - teapotofentity) / 25
+	end
+	
+	
+
 	if numberoftanpo.Value ~= stt then
 		numberoftanpo.Value += (stt - numberoftanpo.Value) / 17.75
 	end
@@ -363,12 +450,17 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if not ScannerEnable then
 		valueSpeed = 0
 		stt = 0
+		vulom = 0
 	elseif EntityCount == 0 then 
 		valueSpeed = normalspeed
 		stt = 0.885
 	elseif EntityCount > 0 then
 		valueSpeed = foundspeed
 		stt = 0.7175
+		
+		if closestEntity then
+			vulom = math.clamp(closestDistance / 1000, 0, 1)
+		end
 	end
 
 end)
@@ -378,12 +470,12 @@ end)
 local CustomAchievements = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/DOORS-Custom-Achievements/main/init.luau"))()
 
 CustomAchievements:Grant({
-    Identifier = "NVCS-6000",
-    Title = "NVCS-6000",
-    Desc = "Gold Aura Thing But I Lost My Legs Now.",
-    Reason = "Reach The End Of Th- Press T or Tap to Use it",
-    Image = "rbxassetid://132662854714596"
+	Identifier = "NVCS-6000",
+	Title = "NVCS-6000",
+	Desc = "Gold Aura Thing But I Lost My Legs Now.",
+	Reason = "Reach The End Of Th- Press T or Tap to Use it",
+	Image = "rbxassetid://132662854714596"
 }, {
-    CheckOwned = false,
-    Remember = false
+	CheckOwned = false,
+	Remember = false
 })
