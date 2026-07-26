@@ -408,10 +408,10 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if closestAttachment then
 		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 		
-		result += 275
+		result += 100
 		
-		if result < 1000 then
-			local A = math.clamp(result / 1000, 0, 0.3)
+		if result < 250 then
+			local A = math.clamp(result / 250, 0, 0.3)
 			
 			tanpoofentity = 1 - A
 		end
@@ -458,9 +458,13 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	elseif EntityCount > 0 then
 		valueSpeed = foundspeed
 		stt = 0.7175
+		local Ers
+		pcall(function()
+			Ers = 250 - closestDistance
+		end)
 		
-		if closestEntity then
-			vulom = math.clamp(closestDistance / 1000, 0, 1)
+		if Ers then
+			vulom = math.clamp(Ers / 250, 0, 1)
 		end
 	end
 
