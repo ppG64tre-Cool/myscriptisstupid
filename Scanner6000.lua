@@ -408,9 +408,9 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if closestAttachment then
 		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 
-		result += 230
+		result += 225
 		
-		if result < 480 then
+		if result < 475 then
 			local A1 = math.clamp(result / 250, 0, 0.3)
 			
 			tanpoofentity = 1 - A1
