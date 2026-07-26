@@ -408,10 +408,10 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if closestAttachment then
 		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 
-		result += 225
+		result += 
 		
-		if result < 475 then
-			local A1 = math.clamp(result / 250, 0, 0.3)
+		if result < 50 then
+			local A1 = math.clamp(result / 50, 0, 0.315)
 			
 			tanpoofentity = 1 - A1
 		else
@@ -462,11 +462,11 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		stt = 0.7175
 		local Ers
 		pcall(function()
-			Ers = 250 - closestDistance 
+			Ers = 50 - closestDistance 
 		end)
 		
 		if Ers then
-			vulom = math.clamp(Ers / 250, 0, 1) * 2.15
+			vulom = math.clamp(Ers / 50, 0, 1) * 2.15
 		end
 	end
 
