@@ -406,7 +406,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	end
 	
 	if closestAttachment then
-		local result = (CameraAtt.WorldPosition - closestAttachment.WorldPosition).Magnitude
+		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 
 		result += 200
 		
@@ -417,6 +417,8 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		else
 			tanpoofentity = 1
 		end
+	else
+		tanpoofentity = 1
 	end
 	
 	-- Update
