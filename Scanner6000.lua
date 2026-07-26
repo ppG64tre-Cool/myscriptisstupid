@@ -421,7 +421,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	
 	StaticSoundE.Volume = vulom
 	
-	guis.staticPngEntity.ImageTransparency = teapotofentity.Value
+	guis.staticPngEntity.ImageTransparency = teapotofentity
 	
 	
 
