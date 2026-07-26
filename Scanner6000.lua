@@ -321,7 +321,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	-- change name all time
 	
 	if changename then
-		guis.Name = genname()
+		guis.Name = genname(6)
 	end
 	
 	-- ======================== --
