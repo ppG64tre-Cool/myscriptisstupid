@@ -44,7 +44,8 @@ local Entitylist = {
 	"A60", "A120", "monster2", "AmbushMoving", "CeaseMoving", 
 	"Specimen 8", "Frostbite", "Rebound", "RipperMoving", 
 	"RushMoving", "Silence", "Eyes", "BackdoorRush", "SingularityZone",
-	"BackdoorLookman", "Death", "RushCounterpart", "Deer God"
+	"BackdoorLookman", "Death", "RushCounterpart", "Deer God", "EyestalkMoving",
+	"SeekMoving"
 }
 
 local EntitylistCount = {
