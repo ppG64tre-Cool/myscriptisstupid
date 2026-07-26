@@ -408,7 +408,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if closestAttachment then
 		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 
-		result += 165
+		result += 205
 		
 		if result < 250 then
 			local A = math.clamp(result / 250, 0, 0.3)
@@ -460,11 +460,11 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		stt = 0.7175
 		local Ers
 		pcall(function()
-			Ers = 250 - closestDistance
+			Ers = 250 - closestDistance 
 		end)
 		
 		if Ers then
-			vulom = math.clamp(Ers / 250, 0, 1)
+			vulom = math.clamp(Ers / 250, 0, 1) * 2.15
 		end
 	end
 
