@@ -10,7 +10,6 @@ local localplayer = game.Players.LocalPlayer
 local mouse = localplayer:GetMouse()
 local UIP = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
 
 local guis: ScreenGui = game:GetObjects("rbxassetid://77380567008109")[1]
 guis.Parent = localplayer:WaitForChild("PlayerGui")
