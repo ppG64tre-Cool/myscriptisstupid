@@ -39,7 +39,7 @@ local svaposE: UDim2 = guis.staticPngEntity.Position
 local numbershaky = 10
 local resultShake = numbershaky
 
-local StaticSoundE: Sound = guis.EntityStatic
+local StaticSoundE: Sound = guis:WaitForChild("EntityStatic")
 
 local rng = Random.new()
 
