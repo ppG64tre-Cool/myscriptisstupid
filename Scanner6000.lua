@@ -454,6 +454,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	elseif EntityCount == 0 then 
 		valueSpeed = normalspeed
 		stt = 0.885
+		vulom = 0
 	elseif EntityCount > 0 then
 		valueSpeed = foundspeed
 		stt = 0.7175
