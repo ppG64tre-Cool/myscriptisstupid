@@ -8,9 +8,9 @@ end
 
 -- Values Of Closest Entity
 
-local teapotofentity: number = 1
+local teapotofentity = 1
 
-local tanpoofentity: number = 1
+local tanpoofentity = 1
 
 local vulom = 0
 
