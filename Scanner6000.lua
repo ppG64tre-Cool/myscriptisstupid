@@ -419,11 +419,11 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		tanpoofentity = 1
 	end
 	
+	-- Update
+
 	StaticSoundE.Volume = vulom
 	
 	guis.staticPngEntity.ImageTransparency = teapotofentity
-	
-	
 
 	-- AUDIO & VALUE LERPING
 	if guis.Sound.PlaybackSpeed ~= valueSpeed then
