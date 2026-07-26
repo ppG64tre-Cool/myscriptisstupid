@@ -431,7 +431,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	end
 	
 	if teapotofentity ~= tanpoofentity then
-		numberoftanpo += (tanpoofentity - teapotofentity) / 25
+		teapotofentity += (tanpoofentity - teapotofentity) / 25
 	end
 	
 	
