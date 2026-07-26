@@ -408,8 +408,6 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if closestAttachment then
 		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 		
-		result += 100
-		
 		if result < 250 then
 			local A = math.clamp(result / 250, 0, 0.3)
 			
