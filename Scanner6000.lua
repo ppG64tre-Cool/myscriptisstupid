@@ -34,12 +34,12 @@ local function UpdateCameraPos()
 	CameraAtt.WorldOrientation = Vector3.new(0, 0, 0)
 end
 
-local svapos: UDim2? = guis.staticPng.Position
-local svaposE: UDim2? = guis.staticPngEntity.Position
+local svapos: UDim2 = guis.staticPng.Position
+local svaposE: UDim2 = guis.staticPngEntity.Position
 local numbershaky = 10
 local resultShake = numbershaky
 
-local StaticSoundE: Sound? = guis.EntityStatic
+local StaticSoundE: Sound = guis.EntityStatic
 
 local rng = Random.new()
 
@@ -408,15 +408,15 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 	if closestAttachment then
 		local result = (closestAttachment.WorldPosition - CameraAtt.WorldPosition).Magnitude
 
-		result += 205
+		result += 200
 		
 		if result < 250 then
 			local A = math.clamp(result / 250, 0, 0.3)
 			
 			tanpoofentity = 1 - A
+		else
+			tanpoofentity = 1
 		end
-	else
-		tanpoofentity = 1
 	end
 	
 	-- Update
