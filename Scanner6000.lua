@@ -314,15 +314,14 @@ local CustomAchievements = loadstring(game:HttpGet("https://raw.githubuserconten
 
 CustomAchievements:Grant({
     Identifier = "NVCS-6000",
-    Title = "Did You Happy?",
-    Desc = "This Thing So Useful.",
-    Reason = "Reach The End Of Th-",
-    Image = "rbxassetid://12309073114"
+    Title = "NVCS-6000",
+    Desc = "Gold Aura Thing But I Lost My Legs Now.",
+    Reason = "Reach The End Of Th- Press T to Use it",
+    Image = "rbxassetid://132662854714596"
 }, {
-    CheckOwned = true,
-    Remember = true
+    CheckOwned = false,
+    Remember = false
 })
-
 
 
 
