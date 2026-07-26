@@ -76,6 +76,18 @@ local valueSpeed = 2.35
 local stt = 0.885
 local ScannerEnable = true
 
+-- Mobile GUI defined globally for state updates
+local mobileBtn: TextButton?
+local mobileStroke: UIStroke?
+
+-- [NEW] COLOR DEFINITIONS
+local mobileColors = {
+	OnText = Color3.fromRGB(0, 255, 255), -- Cyan Active Text/Border
+	OffText = Color3.fromRGB(0, 150, 150), -- Dimmer Cyan Inactive Text/Border
+	OnBg = Color3.fromRGB(0, 50, 50), -- Dark Cyan Background (On)
+	OffBg = Color3.fromRGB(20, 20, 20) -- Dark Grey Background (Off)
+}
+
 -- toggle Scanner
 local function toggleScanner()
 	ScannerEnable = not ScannerEnable
@@ -87,18 +99,32 @@ local function toggleScanner()
 			colorEffect.Enabled = true
 			guis.Enabled = true
 		end
+		
+		-- Update Mobile Colors
+		if mobileBtn and mobileStroke then
+			mobileBtn.BackgroundColor3 = mobileColors.OnBg
+			mobileBtn.TextColor3 = mobileColors.OnText
+			mobileStroke.Color = mobileColors.OnText
+		end
 	else
 		if guis:FindFirstChild("turnoff") and guis:FindFirstChild("turnoff"):IsA("Sound") then
 			guis:FindFirstChild("turnoff"):Play()
 			colorEffect.Enabled = false
 			guis.Enabled = false
 		end
+		
+		-- Update Mobile Colors
+		if mobileBtn and mobileStroke then
+			mobileBtn.BackgroundColor3 = mobileColors.OffBg
+			mobileBtn.TextColor3 = mobileColors.OffText
+			mobileStroke.Color = mobileColors.OffText
+		end
 	end
 end
 
 toggleScanner()
 
--- toggle keybind
+-- toggle keybind (For PC)
 UIP.InputBegan:Connect(function(input, processed)
 	if processed then return end
 	if input.KeyCode == Enum.KeyCode.T then
@@ -106,6 +132,44 @@ UIP.InputBegan:Connect(function(input, processed)
 	end
 end)
 
+-- Mobile Support (Creates a tap button if on a touch device)
+if UIP.TouchEnabled then
+	local mobileGui = Instance.new("ScreenGui")
+	mobileGui.Name = "NVCS_MobileToggle"
+	mobileGui.ResetOnSpawn = false
+	mobileGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	mobileGui.Parent = localplayer:WaitForChild("PlayerGui")
+
+	local toggleBtn = Instance.new("TextButton")
+	toggleBtn.Size = UDim2.new(0, 75, 0, 75) -- Slightly larger for tap accuracy
+	toggleBtn.Position = UDim2.new(1, -95, 0.5, 0)
+	toggleBtn.AnchorPoint = Vector2.new(0, 0.5)
+	
+	-- Initializing Colors (Off state will be handled by the immediate toggleScanner call above)
+	toggleBtn.BackgroundColor3 = mobileColors.OnBg
+	toggleBtn.BackgroundTransparency = 0.3
+	toggleBtn.TextColor3 = mobileColors.OnText
+	toggleBtn.Text = "SCAN"
+	toggleBtn.Font = Enum.Font.SourceSansBold
+	toggleBtn.TextScaled = true
+	toggleBtn.Parent = mobileGui
+	mobileBtn = toggleBtn -- Set global reference
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0.3, 0) -- Rounded
+	corner.Parent = toggleBtn
+	
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = mobileColors.OnText
+	stroke.Thickness = 2
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.Parent = toggleBtn
+	mobileStroke = stroke -- Set global reference
+
+	toggleBtn.MouseButton1Click:Connect(function()
+		toggleScanner()
+	end)
+end
 
 -- ==========================================
 -- EVENT-DRIVEN TRACKING FUNCTIONS (NO LAG)
@@ -208,7 +272,6 @@ for _, v in pairs(workspace:GetChildren()) do
 	checkWorkspaceEntity(v)
 end
 workspace.ChildAdded:Connect(checkWorkspaceEntity)
-
 
 
 -- ==========================================
@@ -316,12 +379,9 @@ CustomAchievements:Grant({
     Identifier = "NVCS-6000",
     Title = "NVCS-6000",
     Desc = "Gold Aura Thing But I Lost My Legs Now.",
-    Reason = "Reach The End Of Th- Press T to Use it",
+    Reason = "Reach The End Of Th- Press T or Tap to Use it",
     Image = "rbxassetid://132662854714596"
 }, {
     CheckOwned = false,
     Remember = false
 })
-
-
-
