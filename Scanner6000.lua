@@ -98,7 +98,7 @@ attachment.Visible = false
 
 local lige = Instance.new("PointLight", attachment)
 lige.Range = 120
-lige.Brightness = 1
+lige.Brightness = 0.45
 lige.Color = Color3.new(1, 1, 1)
 lige.Shadows = false
 
@@ -231,17 +231,17 @@ end
 -- 1. Checks Rooms for Items and Figures
 local function checkAndCacheRoomDescendant(child: Instance)
 	if child:IsA("Model") and child.Name == "KeyObtain" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 30)
 	elseif child:IsA("Model") and child.Name == "LeverForGate" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 30)
 	elseif (child:IsA("BasePart") and (child.Name == "RoomExit" or child.Name == "Exit")) then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 15)
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 15)
 	elseif child:IsA("BasePart") and child.Name == "BookBase" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 10)
 	elseif child:IsA("Model") and child.Name == "FuseObtain" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 10)
 	elseif child:IsA("BasePart") and child.Name == "imstuff" then
-		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 10)
 
 		-- Figure Cache Check
 	elseif child:IsA("Model") and (child.Name == "FigureRig" or child.Name == "FigureRagdoll") then
