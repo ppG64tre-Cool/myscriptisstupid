@@ -30,7 +30,8 @@ local CameraAtt = Instance.new("Attachment", workspace.Terrain)
 CameraAtt.Name = "CameraAtt"
 
 local function UpdateCameraPos()
-	CameraAtt.WorldPosition = workspace.Camera.CFrame.Position
+	
+	CameraAtt.WorldPosition = workspace.CurrentCamera.CFrame.Position
 	CameraAtt.WorldOrientation = Vector3.new(0, 0, 0)
 end
 
