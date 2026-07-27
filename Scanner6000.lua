@@ -70,7 +70,7 @@ colorEffect.Parent = game:GetService("Lighting")
 
 local Entitylist = {
 	"A60", "A120", "monster2", "AmbushMoving", "CeaseMoving", 
-	"A-60",
+	"A-60", "A60Moving", "A120Moving",
 	"Specimen 8", "Frostbite", "Rebound", "RipperMoving", 
 	"RushMoving", "Silence", "Eyes", "BackdoorRush", "SingularityZone",
 	"BackdoorLookman", "Death", "RushCounterpart", "Deer God", "EyestalkMoving",
@@ -79,9 +79,9 @@ local Entitylist = {
 
 local EntitylistCount = {
 	"A60", "A120", "monster2", "AmbushMoving", 
-	"A-60",
+	"A-60", "A60Moving", "A120Moving",
 	"Specimen 8", "Rebound", "RipperMoving", 
-	"RushMoving", "BackdoorRush" , "Death"
+	"RushMoving", "BackdoorRush" , "Death", "Deer God"
 }
 
 -- TABLES FOR TRACKING (OPTIMIZED)
@@ -234,7 +234,7 @@ local function checkAndCacheRoomDescendant(child: Instance)
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
 	elseif child:IsA("Model") and child.Name == "LeverForGate" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 30)
-	elseif child:IsA("BasePart") and child.Name == "RoomExit" then
+	elseif (child:IsA("BasePart") and (child.Name == "RoomExit" or child.Name == "Exit")) then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 15)
 	elseif child:IsA("BasePart") and child.Name == "BookBase" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 1.5, 10)
