@@ -414,7 +414,7 @@ RenderCheck = RunService.RenderStepped:Connect(function()
 		if result < 50 then
 			local A1 = math.clamp(result / 50, 0.75, 1)
 			
-			tanpoofentity = A1 - 1
+			tanpoofentity = A1
 		else
 			tanpoofentity = 1
 		end
