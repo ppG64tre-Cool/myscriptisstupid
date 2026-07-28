@@ -201,10 +201,6 @@ G2L["13"] = Instance.new("LocalScript", G2L["12"]);
 G2L["13"]["Enabled"] = false;
 G2L["13"]["Disabled"] = true;
 
-
-
-return G2L["1"], require;
-
 -- Values Of Closest Entity
 
 local teapotofentity = 1
@@ -238,7 +234,7 @@ local svaposE: UDim2 = guis.staticPngEntity.Position
 local numbershaky = 10
 local resultShake = numbershaky
 
-local StaticSoundE: Sound = guis:WaitForChild("EntityStatic")
+local StaticSoundE: Sound = G2L["7"]
 
 local rng = Random.new()
 
