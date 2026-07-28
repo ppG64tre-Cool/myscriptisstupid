@@ -6,6 +6,205 @@ local function genname(long: number)
 	return name
 end
 
+--[=[
+ d888b  db    db d888888b      .d888b.      db      db    db  .d8b.  
+88' Y8b 88    88   `88'        VP  `8D      88      88    88 d8' `8b 
+88      88    88    88            odD'      88      88    88 88ooo88 
+88  ooo 88    88    88          .88'        88      88    88 88~~~88 
+88. ~8~ 88b  d88   .88.        j88.         88booo. 88b  d88 88   88    @uniquadev
+ Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  CONVERTER 
+]=]
+
+-- Instances: 19 | Scripts: 3 | Modules: 0 | Tags: 0
+local G2L = {};
+
+-- StarterGui.Scanner
+G2L["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
+G2L["1"]["Name"] = [[Scanner]];
+G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+
+
+-- StarterGui.Scanner.Main
+G2L["2"] = Instance.new("LocalScript", G2L["1"]);
+G2L["2"]["Enabled"] = false;
+G2L["2"]["Name"] = [[Main]];
+G2L["2"]["Disabled"] = true;
+
+
+-- StarterGui.Scanner.Sound
+G2L["3"] = Instance.new("Sound", G2L["1"]);
+G2L["3"]["PlaybackSpeed"] = 2.35;
+G2L["3"]["Looped"] = true;
+G2L["3"]["SoundId"] = [[rbxassetid://485115792]];
+
+
+-- StarterGui.Scanner.turnon
+G2L["4"] = Instance.new("Sound", G2L["1"]);
+G2L["4"]["Volume"] = 1.25;
+G2L["4"]["Name"] = [[turnon]];
+G2L["4"]["SoundId"] = [[rbxassetid://9125397532]];
+
+
+-- StarterGui.Scanner.turnon.PitchShiftSoundEffect
+G2L["5"] = Instance.new("PitchShiftSoundEffect", G2L["4"]);
+
+
+
+-- StarterGui.Scanner.turnoff
+G2L["6"] = Instance.new("Sound", G2L["1"]);
+G2L["6"]["Volume"] = 1.25;
+G2L["6"]["Name"] = [[turnoff]];
+G2L["6"]["SoundId"] = [[rbxassetid://9125397532]];
+
+
+-- StarterGui.Scanner.EntityStatic
+G2L["7"] = Instance.new("Sound", G2L["1"]);
+G2L["7"]["PlaybackSpeed"] = 0.5;
+G2L["7"]["Volume"] = 0.1;
+G2L["7"]["Looped"] = true;
+G2L["7"]["Name"] = [[EntityStatic]];
+G2L["7"]["SoundId"] = [[rbxassetid://6351509719]];
+
+
+-- StarterGui.Scanner.staticPng
+G2L["8"] = Instance.new("ImageLabel", G2L["1"]);
+G2L["8"]["Interactable"] = false;
+G2L["8"]["ZIndex"] = -1;
+G2L["8"]["BorderSizePixel"] = 0;
+G2L["8"]["SliceCenter"] = Rect.new(0, 0, 5, 5);
+G2L["8"]["SliceScale"] = 15;
+G2L["8"]["ScaleType"] = Enum.ScaleType.Tile;
+G2L["8"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["8"]["ResampleMode"] = Enum.ResamplerMode.Pixelated;
+G2L["8"]["ImageTransparency"] = 0.886;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["8"]["ImageColor3"] = Color3.fromRGB(255, 255, 0);
+G2L["8"]["Image"] = [[rbxassetid://11306695974]];
+G2L["8"]["TileSize"] = UDim2.new(0.01, 0, 0.01, 0);
+G2L["8"]["Size"] = UDim2.new(25, 0, 25, 0);
+G2L["8"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["8"]["BackgroundTransparency"] = 1;
+G2L["8"]["Name"] = [[staticPng]];
+G2L["8"]["Position"] = UDim2.new(-12, 0, -12, 0);
+
+
+-- StarterGui.Scanner.staticPng.LocalScript
+G2L["9"] = Instance.new("LocalScript", G2L["8"]);
+G2L["9"]["Enabled"] = false;
+G2L["9"]["Disabled"] = true;
+
+
+-- StarterGui.Scanner.HelloHowdidYouSeethis
+G2L["a"] = Instance.new("BillboardGui", G2L["1"]);
+G2L["a"]["Active"] = true;
+G2L["a"]["LightInfluence"] = 1;
+G2L["a"]["AlwaysOnTop"] = true;
+G2L["a"]["Size"] = UDim2.new(15, 0, 15, 0);
+G2L["a"]["Enabled"] = false;
+G2L["a"]["ClipsDescendants"] = true;
+G2L["a"]["Name"] = [[HelloHowdidYouSeethis]];
+G2L["a"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+
+
+-- StarterGui.Scanner.HelloHowdidYouSeethis.ImageLabel
+G2L["b"] = Instance.new("ImageLabel", G2L["a"]);
+G2L["b"]["Interactable"] = false;
+G2L["b"]["BorderSizePixel"] = 0;
+G2L["b"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0);
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["b"]["ImageColor3"] = Color3.fromRGB(255, 158, 0);
+G2L["b"]["Image"] = [[rbxassetid://6673021984]];
+G2L["b"]["Size"] = UDim2.new(1, 0, 1, 0);
+G2L["b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["b"]["BackgroundTransparency"] = 1;
+
+
+-- StarterGui.Scanner.Vistion
+G2L["c"] = Instance.new("ColorCorrectionEffect", G2L["1"]);
+G2L["c"]["Brightness"] = 0.15;
+G2L["c"]["Name"] = [[Vistion]];
+G2L["c"]["Saturation"] = -0.85;
+G2L["c"]["TintColor"] = Color3.fromRGB(255, 242, 136);
+
+
+-- StarterGui.Scanner.Ui
+G2L["d"] = Instance.new("Frame", G2L["1"]);
+G2L["d"]["Interactable"] = false;
+G2L["d"]["BorderSizePixel"] = 0;
+G2L["d"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["d"]["Size"] = UDim2.new(0.98094, 0, 0.97809, 0);
+G2L["d"]["Position"] = UDim2.new(0.01127, 0, 0.01289, 0);
+G2L["d"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["d"]["Name"] = [[Ui]];
+G2L["d"]["BackgroundTransparency"] = 1;
+
+
+-- StarterGui.Scanner.Ui.UICorner
+G2L["e"] = Instance.new("UICorner", G2L["d"]);
+G2L["e"]["CornerRadius"] = UDim.new(0.01, 0);
+
+
+-- StarterGui.Scanner.Ui.UIStroke
+G2L["f"] = Instance.new("UIStroke", G2L["d"]);
+G2L["f"]["Thickness"] = 5;
+G2L["f"]["Color"] = Color3.fromRGB(255, 243, 167);
+
+
+-- StarterGui.Scanner.Ui.TextBox
+G2L["10"] = Instance.new("TextBox", G2L["d"]);
+G2L["10"]["Interactable"] = false;
+G2L["10"]["BorderSizePixel"] = 0;
+G2L["10"]["TextEditable"] = false;
+G2L["10"]["TextWrapped"] = true;
+G2L["10"]["TextSize"] = 14;
+G2L["10"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10"]["TextScaled"] = true;
+G2L["10"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10"]["RichText"] = true;
+G2L["10"]["FontFace"] = Font.new([[rbxasset://fonts/families/Arial.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["10"]["Size"] = UDim2.new(0.15654, 0, 0.03808, 0);
+G2L["10"]["Position"] = UDim2.new(0.83746, 0, 0.01845, 0);
+G2L["10"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["10"]["Text"] = [[NVCS-6000]];
+G2L["10"]["BackgroundTransparency"] = 1;
+
+
+-- StarterGui.Scanner.Ui.TextBox.UIGradient
+G2L["11"] = Instance.new("UIGradient", G2L["10"]);
+G2L["11"]["Rotation"] = 100;
+G2L["11"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(255, 200, 135)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(255, 255, 0))};
+
+
+-- StarterGui.Scanner.staticPngEntity
+G2L["12"] = Instance.new("ImageLabel", G2L["1"]);
+G2L["12"]["Interactable"] = false;
+G2L["12"]["ZIndex"] = -1;
+G2L["12"]["BorderSizePixel"] = 0;
+G2L["12"]["SliceCenter"] = Rect.new(0, 0, 5, 5);
+G2L["12"]["SliceScale"] = 15;
+G2L["12"]["ScaleType"] = Enum.ScaleType.Tile;
+G2L["12"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12"]["ImageTransparency"] = 1;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["12"]["ImageColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["12"]["Image"] = [[rbxassetid://11306695974]];
+G2L["12"]["TileSize"] = UDim2.new(0.25, 0, 0.015, 0);
+G2L["12"]["Size"] = UDim2.new(25, 0, 25, 0);
+G2L["12"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["12"]["BackgroundTransparency"] = 1;
+G2L["12"]["Name"] = [[staticPngEntity]];
+G2L["12"]["Position"] = UDim2.new(-12, 0, -12, 0);
+
+
+-- StarterGui.Scanner.staticPngEntity.LocalScript
+G2L["13"] = Instance.new("LocalScript", G2L["12"]);
+G2L["13"]["Enabled"] = false;
+G2L["13"]["Disabled"] = true;
+
+
+
+return G2L["1"], require;
+
 -- Values Of Closest Entity
 
 local teapotofentity = 1
@@ -21,8 +220,7 @@ local mouse = localplayer:GetMouse()
 local UIP = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
-local guis: ScreenGui? = game:GetObjects("rbxassetid://77380567008109")[1]
-guis.Parent = localplayer:WaitForChild("PlayerGui")
+local guis = G2L["1"]
 guis.ResetOnSpawn = false
 
 local CameraAtt = Instance.new("Attachment", workspace.Terrain)
