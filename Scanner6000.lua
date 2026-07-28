@@ -60,7 +60,7 @@ G2L["6"]["SoundId"] = [[rbxassetid://9125397532]];
 -- StarterGui.Scanner.EntityStatic
 G2L["7"] = Instance.new("Sound", G2L["1"]);
 G2L["7"]["PlaybackSpeed"] = 0.5;
-G2L["7"]["Volume"] = 0.1;
+G2L["7"]["Volume"] = 0;
 G2L["7"]["Looped"] = true;
 G2L["7"]["Name"] = [[EntityStatic]];
 G2L["7"]["SoundId"] = [[rbxassetid://6351509719]];
@@ -483,7 +483,7 @@ local function checkWorkspaceEntity(child: Instance)
 end
 
 -- Hook up event listeners for map tracking
-if workspace:WaitForChild("CurrentRooms") then
+if workspace:WaitForChild("CurrentRooms", 5) then
 	-- Scan existing
 	for _, room in pairs(workspace.CurrentRooms:GetChildren()) do
 		for _, child in pairs(room:GetDescendants()) do
