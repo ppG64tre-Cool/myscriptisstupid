@@ -436,9 +436,15 @@ local function checkAndCacheRoomDescendant(child: Instance)
 		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 10)
 	elseif child:IsA("BasePart") and child.Name == "imstuff" then
 		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 10)
+	elseif child:IsA("Model") and child.Name == "MinesAnchor" then
+		createTrackedLight(child, Color3.new(1, 1, 1), 0.875, 50)
 
 		-- Figure Cache Check
-	elseif child:IsA("Model") and (child.Name == "FigureRig" or child.Name == "FigureRagdoll") then
+	elseif child:IsA("Model") and (
+			child.Name == "FigureRig" or (
+				child.Name == "FigureRagdoll" or (child.Name == "Grumbo")
+			)
+		) then
 		if not HighlightE[child] then
 			local highlightRig = Instance.new("Highlight", child)
 			highlightRig.FillTransparency = 0.875
