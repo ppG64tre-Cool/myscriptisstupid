@@ -16,8 +16,6 @@ local function setupGyroCamera(character)
 
 	wait();
 
-	game.Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
-
 	local Head: BasePart;
 
 	
