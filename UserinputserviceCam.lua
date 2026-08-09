@@ -62,7 +62,7 @@ local function setupGyroCamera(character)
 
 			local offset = CFrame.new(0, 0, 0);
 
-			camera.CFrame = CFrame.new((targetPosition * CFrame.new(0, 0, -0.725)).Position) * currentRotation * offset;
+			camera.CFrame = CFrame.new((targetPosition * CFrame.new(0, 0, -0.75)).Position) * currentRotation * offset;
 
 		end);
 
