@@ -50,11 +50,11 @@ local function setupGyroCamera(character)
 
 		local renderConnection = RunService.RenderStepped:Connect(function()
 
-			--if (camera.CameraType ~= Enum.CameraType.Scriptable) then
+			if (camera.CameraType ~= Enum.CameraType.Scriptable) then
 
-				--camera.CameraType = Enum.CameraType.Scriptable;
+				camera.CameraType = Enum.CameraType.Scriptable;
 
-			--end
+			end
 
 			local targetPosition = Head.CFrame;
 
